@@ -1,0 +1,106 @@
+@media only screen and (max-width: 1000px) {
+
+	.left-content {
+ 		width: 50px;
+ 		transition: width 0.5s;
+	}
+
+	.left-content .side-bar .menu-side-bar ul li a span {
+		display: none;
+	} 
+
+	.left-content .side-bar .user-infor .dropdown .user p {
+		display: none;
+	}
+
+	.left-content .side-bar .user-infor .user-notification {
+		display: none;
+	}
+	.iconbell {
+		display: none;
+	}
+
+	.left-content .side-bar-action a span + span{
+		display: none;
+	}
+
+	.left-content .search .mid-search {
+		display: none;
+	}
+	.left-content .search .mid-search + .left-search {
+		display: none;
+	}
+
+}
+
+@media only screen and (min-width: 1000px) {
+	.left-content {
+	 		width: 280px;
+	 		transition: width 0.5s;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.left-content {
+ 		display:none;
+	}
+
+	#alert-confirm-delete .alert-remove {
+		width: 500px;
+		transition: width 0.5s;
+	}
+
+	.mid-content{
+		display: none;
+	}
+
+	.right-content{
+		width: 100%;
+		transition: width 0.5s;
+	}
+
+	#modal-setting .accountSetting {
+		width: 400px;
+	}
+
+	#modal-setting .accountSetting div .account-setting-left {
+		width: 40px;
+		padding-right: 5px;
+	}
+
+	#modal-setting .accountSetting div .account-setting-right {
+	    padding: 20px 10px;
+	}
+
+	#modal-setting .accountSetting div .account-setting-left ul li span {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 450px) {
+	#model-create-list .create-list {
+		width: 300px;
+		transition: width 0.5s;
+	}
+
+	#alert-confirm-delete .alert-remove {
+		width: 400px;
+		height: 325px;
+		transition: width 0.5s;
+	}
+
+	#modal-setting .accountSetting div .account-setting-right div {
+		display: flex;
+	   		flex-direction: column;
+	   		margin-bottom: 30px;
+	}
+
+	#modal-setting .accountSetting div .account-setting-right #checkbox-hour {
+		padding-left: 0px;
+		display: flex;
+		flex-direction:row;
+	}
+}
+
+
+
