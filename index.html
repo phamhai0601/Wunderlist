@@ -38,7 +38,7 @@
 								<p>Last synced a minute ago</p>
 								<li>Sync Now</li>
 								<hr>
-								<li>Account Settings</li>
+								<li id="accountSetting"><a href="">Account Settings</a></li>
 								<li>Change Background</li>
 								<li>Restore deleted lists</li>
 								<hr>
@@ -272,9 +272,9 @@
 			</div>
 		</div>
 	</div>
-	<div id="model-create-list">
+	<div id="model-create-list" tabindex="-1">
 		<div class="underlay"></div>
-		<div class="create-list">
+		<div class="create-list" id="create-list">
 			<ul>
 				<li>
 					<p style="text-align: center;">Create New List</p>
@@ -508,14 +508,6 @@
 
 	<!-- Modal -->
 
-<script type="text/javascript">
-
-	var create_list = document.getElementById("side-bar-action");
-	function show_create_list(){
-		var alert = document.getElementById("model-create-list");
-		alert.style.display="block";
-	}
-	create_list.addEventListener('click', show_create_list);
-</script>
+<script src="js/demo.js"></script>
 </body>
 </html>
