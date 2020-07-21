@@ -92,12 +92,11 @@ a {
 	font-size: 8px;
 }
 
-.fade_out{
-	    .transition-duration(0, 200ms);
-    .transition-property(visibility, opacity);
-    .transition-delay(0);
+.btn-submit {
+	background-color: #328ad6;
+	box-shadow: inset 0 0 0 1px #328ad6;
+	color: white;
 }
-
 
  /*------*/
 
@@ -187,6 +186,7 @@ a {
 .left-content .side-bar .user-infor .dropdown .dropdown-content ul li {
 	padding: 12px;
 	font-size: 13px;
+	cursor: pointer;
 }
 
 .left-content .side-bar .user-infor .dropdown .dropdown-content ul p {
@@ -531,12 +531,13 @@ a {
     top: 40%;
     transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
+    animation: fade_in 0.8s;
 }
 
 #modal-setting .accountSetting div .account-setting-left {
 	width: 170px;
 	height: 280px;
-	border-right: 1px solid gray;
+	border-right: 1px solid lightgray;
 }
 
 #modal-setting .accountSetting div .account-setting-left li {
@@ -549,6 +550,7 @@ a {
 	display: inline-block;
 	position: absolute;
 	margin-left: 15px;
+	color: gray;
 }
 
 #modal-setting .accountSetting div .account-setting-left li {
@@ -595,6 +597,11 @@ a {
 #modal-setting .accountSetting div .account-setting-right {
 	flex-grow:1;
 	padding: 20px 50px;
+
+}
+
+#modal-setting .accountSetting div .account-setting-right input[type="date"]::-webkit-calendar-picker-indicator {
+	opacity: 0.5
 }
 
 #modal-setting .accountSetting div .account-setting-right #checkbox-hour {
@@ -610,26 +617,35 @@ a {
 
 #modal-setting .accountSetting div .account-setting-right div > label {
 	width: 130px;
+	color: gray;
 }
 
 #modal-setting .accountSetting div .account-setting-right div > select {
 	flex-grow:1;
 	outline: none;
 	text-align:center;
+	border: none;
+    box-shadow: inset 0 0 0 1px #d6d6d6;
+    color: gray;
 }
 
 #modal-setting .accountSetting div .account-setting-right div > input {
 	flex-grow:1;
 	outline: none;
 	text-align:center;
+	border: none;
+    box-shadow: inset 0 0 0 1px #d6d6d6;
+    color: gray;
 }
+
 
 #modal-setting .accountSetting div .account-setting-right div > span {
 	padding: 0px 20px 0px 0px;
+	color: gray;
 }
 
 #modal-setting .accountSetting .footer-account-setting {
-	border-top:1px solid black;
+	border-top:1px solid lightgray;
 	flex-grow: 1;
 	padding: 20px 0px
 }
@@ -641,7 +657,6 @@ a {
 
 #modal-setting .accountSetting .footer-account-setting button {
 	padding: 10px 30px;
-	background-color: blue;
 	border:none;
 	color: white;
 	outline: none;
@@ -653,8 +668,6 @@ a {
     width: 100%;
     height: 100%;
     top: 0px;
-    animation-delay: 3.5s;
-
 }
 
 @keyframes fade_in {
@@ -761,11 +774,7 @@ a {
 	color: #737272;
 }
 
-#model-create-list .create-list ul li span .btn-submit {
-	background-color: #328ad6;
-	box-shadow: inset 0 0 0 1px #328ad6;
-	color: white;
-}
+
 
 #alert-confirm-delete{
     display: none;

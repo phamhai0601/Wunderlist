@@ -38,7 +38,7 @@
 								<p>Last synced a minute ago</p>
 								<li>Sync Now</li>
 								<hr>
-								<li id="accountSetting"><a href="">Account Settings</a></li>
+								<li><a id="account-Setting">Account Settings</a></li>
 								<li>Change Background</li>
 								<li>Restore deleted lists</li>
 								<hr>
@@ -436,9 +436,9 @@
 
 		</ul>
 	</div>
-	<div id="modal-setting">
+	<div id="modal-setting" tabindex="-1">
 		<div class="underlay"></div>
-		<div class="accountSetting">
+		<div class="accountSetting" id="accountSetting">
 			<form action="#">
 			<div style="display: flex;">
 				<div class="account-setting-left">
@@ -500,7 +500,7 @@
 				</div>
 			</div>
 			<div class="footer-account-setting">
-				<button type="submit">Done</button>
+				<button type="submit" class="btn-submit">Done</button>
 			</div>
 			</form>
 		</div>
@@ -508,6 +508,7 @@
 
 	<!-- Modal -->
 
-<script src="js/demo.js"></script>
+<!-- <script src="js/demo.js"></script> -->
+<script src="js/custom.js"></script>
 </body>
 </html>
