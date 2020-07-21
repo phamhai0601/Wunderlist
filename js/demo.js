@@ -1,12 +1,3 @@
-
-
-
-function show_create_list(){
-	var alert = document.getElementById("model-create-list");
-	alert.style.display="block";
-	window.location.href = '#model-create-list';
-}
-
 	//------------
 function close_model_create_list(){
 	document.getElementById("create-list").style.animation = "fade_out 0.8s";
@@ -36,17 +27,14 @@ document.addEventListener("keydown", function(){
 	}
 });
 
-document.getElementById("side-bar-action").addEventListener('click', show_create_list);
+document.getElementById("side-bar-action").addEventListener('click', function(){
+	document.getElementById("model-create-list").style.display="block";
+});
 
 document.querySelector("#model-create-list button[class=btn-cancel]").addEventListener("click", function(){
 	close_model_create_list();
 });
 
-
-
-
-
 document.getElementById("accountSetting").addEventListener("click", function(){
-	var alert = document.getElementById("modal-setting");
-	alert.style.display="block";
+	document.getElementById("modal-setting");.style.display="block";
 });
