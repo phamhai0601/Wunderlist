@@ -414,6 +414,7 @@ a {
     border: none;
     background-color: transparent;
     outline: none;
+
 }
 
 .right-content .center-right-content {
@@ -453,8 +454,8 @@ a {
 	height: 50px;
 	display: inline-block;
 	line-height: 50px;
-	margin-left: 10px;
 	border-bottom:1px solid #ebebeb;
+	padding-right: 0px;
 }
 
 .right-content .center-right-content  ul  li .border_bot {

@@ -38,3 +38,5 @@ document.querySelector("#model-create-list button[class=btn-cancel]").addEventLi
 document.getElementById("account-Setting").addEventListener("click", function(){
 	document.getElementById("modal-setting").style.display="block";
 });
+
+
