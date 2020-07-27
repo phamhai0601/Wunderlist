@@ -15,6 +15,14 @@ function close_model_account_setting(){
 	}, 750);	
 }
 
+function show_contextmeunu(x,y){
+	 
+	document.getElementById("context-item").style.display="block";
+	document.getElementById("context-item").style.top = y;
+	document.getElementById("context-item").style.left = x;
+
+}
+
 //addEventListent
 
 document.addEventListener("keydown", function(event){
@@ -27,7 +35,8 @@ document.addEventListener("keydown", function(event){
 	}
 });
 
-document.getElementById("side-bar-action").addEventListener('click', function(){
+document.getElementById("side-bar-action").addEventListener('click', function(event){
+	alert(event.target.tagName);
 	document.getElementById("model-create-list").style.display="block";
 });
 
@@ -38,5 +47,36 @@ document.querySelector("#model-create-list button[class=btn-cancel]").addEventLi
 document.getElementById("account-Setting").addEventListener("click", function(){
 	document.getElementById("modal-setting").style.display="block";
 });
+
+
+var centerTask = document.getElementById("center-task").children;
+for(var i = 0 ; i < centerTask.length; i++){
+	centerTask[i].addEventListener('contextmenu',function(event){
+		var x = event.clientX;
+		var y = event.clientY; 
+		show_contextmeunu(x,y);
+		event.preventDefault();
+	});
+}
+
+/*document.getElementById("modal-context-menu").addEventListener("click", function(event){
+	if(!document.getElementById("center-task").contains(event.target)){
+		document.getElementById("modal-context-menu
+*/
+document.addEventListener("click",function(event){
+	var result;
+	var styleProp = 'display';
+	var el = document.getElementById("context-item");
+	style = el.currentStyle || window.getComputedStyle(el, null);
+	result = style[styleProp] || "unknown";
+
+	if(result == "block"){
+		if(!document.getElementById("context-item").contains(event.target)){
+			document.getElementById("context-item").style.display = "none";
+		}
+	}
+});
+
+
 
 
