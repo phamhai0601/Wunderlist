@@ -59,7 +59,19 @@ for(var i = 0 ; i < centerTask.length; i++){
 	});
 }
 
+document.addEventListener("click",function(event){
+	var result;
+	var styleProp = 'display';
+	var el = document.getElementById("context-item");
+	style = el.currentStyle || window.getComputedStyle(el, null);
+	result = style[styleProp] || "unknown";
 
+	if(result == "block"){
+		if(!document.getElementById("context-item").contains(event.target)){
+			document.getElementById("context-item").style.display = "none";
+		}
+	}
+});
 
 
 
