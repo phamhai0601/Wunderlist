@@ -881,6 +881,7 @@ a {
 #context-item ul li {
 	padding: 4px;
 	height: 30px;
+	cursor: pointer;
 }
 
 #context-item .context-item-icon {
@@ -940,6 +941,10 @@ border: 1px solid #ccc;
 }
 input[type="file"] {
     display: none;
+}
+
+#context-item ul li:hover {
+	background-color: #e0eefa;
 }
 
 
