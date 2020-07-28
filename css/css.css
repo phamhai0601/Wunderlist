@@ -862,7 +862,7 @@ a {
 
 #context-item {
 	width: 220px;
-	height: 335px;
+	height: 440px;
 	z-index: 1;
 	position: absolute;
 	box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
@@ -880,7 +880,7 @@ a {
 
 #context-item ul li {
 	padding: 4px;
-	height: 20px;
+	height: 30px;
 }
 
 #context-item .context-item-icon {
