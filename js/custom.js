@@ -18,9 +18,25 @@ function close_model_account_setting(){
 function show_contextmeunu(x,y){
 	 
 	document.getElementById("context-item").style.display="block";
+	console.log("11234");
 	document.getElementById("context-item").style.top = y;
 	document.getElementById("context-item").style.left = x;
 
+}
+
+function show_menu_side_bar(x,y){
+	document.getElementById("modal-side-bar").style.display = "block";
+	document.getElementById("modal-side-bar").style.top = y;
+	document.getElementById("modal-side-bar").style.left = x;
+}
+
+function getDisplay(id){
+	var result;
+	var styleProp = 'display';
+	var el = document.getElementById(id);
+	style = el.currentStyle || window.getComputedStyle(el, null);
+	result = style[styleProp] || "unknown";
+	return result;
 }
 
 //addEventListent
@@ -51,6 +67,7 @@ document.getElementById("account-Setting").addEventListener("click", function(){
 
 var centerTask = document.getElementById("center-task").children;
 for(var i = 0 ; i < centerTask.length; i++){
+
 	centerTask[i].addEventListener('contextmenu',function(event){
 		var x = event.clientX;
 		var y = event.clientY; 
@@ -60,18 +77,32 @@ for(var i = 0 ; i < centerTask.length; i++){
 }
 
 document.addEventListener("click",function(event){
-	var result;
-	var styleProp = 'display';
-	var el = document.getElementById("context-item");
-	style = el.currentStyle || window.getComputedStyle(el, null);
-	result = style[styleProp] || "unknown";
 
-	if(result == "block"){
+
+	if(getDisplay("context-item") == "block"){
 		if(!document.getElementById("context-item").contains(event.target)){
 			document.getElementById("context-item").style.display = "none";
 		}
 	}
+
+	if(getDisplay("modal-side-bar") == "block"){
+		if(!document.getElementById("modal-side-bar").contains(event.target)){
+			document.getElementById("modal-side-bar").style.display = "none";
+		}		
+	}
 });
+
+var menu_side_bar =document.querySelector(".menu-side-bar ul").children;
+for(var i = 0 ; i < menu_side_bar.length; i++){
+	menu_side_bar[i].addEventListener('contextmenu',function(event){
+		var x = event.clientX;
+		var y = event.clientY; 
+		show_menu_side_bar(x,y);
+		event.preventDefault();
+	});
+}
+
+
 
 
 
