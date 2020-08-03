@@ -18,16 +18,31 @@ function close_model_account_setting(){
 function show_contextmeunu(x,y){
 	 
 	document.getElementById("context-item").style.display="block";
-	console.log("11234");
 	document.getElementById("context-item").style.top = y;
 	document.getElementById("context-item").style.left = x;
+	var height = document.getElementsByTagName("body")[0].offsetHeight - y;
+	document.getElementById("context-item").style.height = height;
+
 
 }
 
 function show_menu_side_bar(x,y){
-	document.getElementById("modal-side-bar").style.display = "block";
-	document.getElementById("modal-side-bar").style.top = y;
-	document.getElementById("modal-side-bar").style.left = x;
+	var element = document.getElementById("modal-side-bar");
+	element.style.display = "block";
+	element.style.top = y;
+	element.style.left = x;
+	console.log(element.offsetHeight);
+	var height = document.getElementsByTagName("body")[0].offsetHeight - y;
+	if(height < element.offsetHeight){
+		element.style.height = height;
+	}
+
+}
+
+function close_menu_side_bar(){
+	var element = document.getElementById("modal-side-bar");
+	element.style.display = "none";
+	element.style.height = "305px";
 }
 
 function getDisplay(id){
@@ -37,6 +52,15 @@ function getDisplay(id){
 	style = el.currentStyle || window.getComputedStyle(el, null);
 	result = style[styleProp] || "unknown";
 	return result;
+}
+
+function removeClassActive(element){
+	var ele = element;
+	for(let i = 0; i< ele.length; i++){
+		if(ele[i].getAttribute('class') == "active"){
+			ele[i].classList.remove("active");
+		}
+	}
 }
 
 //addEventListent
@@ -52,7 +76,6 @@ document.addEventListener("keydown", function(event){
 });
 
 document.getElementById("side-bar-action").addEventListener('click', function(event){
-	alert(event.target.tagName);
 	document.getElementById("model-create-list").style.display="block";
 });
 
@@ -87,7 +110,8 @@ document.addEventListener("click",function(event){
 
 	if(getDisplay("modal-side-bar") == "block"){
 		if(!document.getElementById("modal-side-bar").contains(event.target)){
-			document.getElementById("modal-side-bar").style.display = "none";
+			close_menu_side_bar();
+
 		}		
 	}
 });
@@ -100,7 +124,17 @@ for(var i = 0 ; i < menu_side_bar.length; i++){
 		show_menu_side_bar(x,y);
 		event.preventDefault();
 	});
+
+	menu_side_bar[i].addEventListener('click',function(event){
+		console.log(this.getAttribute('class'));
+		removeClassActive(menu_side_bar);
+		this.classList.add("active");
+		var x = this.textContent;
+		document.querySelector(".head-mid-content span").innerHTML =x;
+
+	});
 }
+
 
 
 
