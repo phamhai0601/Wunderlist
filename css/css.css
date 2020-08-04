@@ -92,10 +92,32 @@ a {
 	font-size: 8px;
 }
 
+
+
 .btn-submit {
 	background-color: #328ad6;
 	box-shadow: inset 0 0 0 1px #328ad6;
 	color: white;
+}
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #bbbbbb; 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: gray; 
+    -webkit-box-shadow: inset 0 0 6px #bbbbbb; 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: #bbbbbb; 
 }
 
  /*------*/
@@ -295,6 +317,7 @@ a {
 
 .mid-content .center-mid-content {
 	padding: 15px;
+	overflow-y: auto;
 }
 
 .mid-content .center-mid-content .add-task {
@@ -302,6 +325,10 @@ a {
 	background-color: rgba(102, 137, 100, 0.75);
 	padding: 10px;
 	display: flex;
+}
+
+.mid-content .center-mid-content .add-task #icon-voice{
+	display: none;
 }
 
 .mid-content .center-mid-content .add-task input {
@@ -312,10 +339,19 @@ a {
 	margin-left: 20px;
 	color: white;
 }
-
+ 
 .mid-content .center-mid-content .add-task span {
 	position: relative;
 	top: 2px;
+}
+
+.mid-content .center-mid-content .add-task #addtask-today {
+	margin-right: 10px;
+	display: none;
+}
+
+.mid-content .center-mid-content .add-task #addtask-starred {
+	display: none;
 }
 
 .mid-content .center-mid-content .add-task > span > svg {
@@ -377,17 +413,22 @@ a {
 	display: flex;
 	flex-direction: column;
 }
+.mid-content .center-mid-content .task-complete p span {
+	text-decoration-line: line-through;
+}
 
 .mid-content .center-mid-content .task-complete p span + span {
 	font-size: 10px;
+	text-decoration-line: none;
 }
 
 .right-content {
-	width: 370px;
+	width: 0px;
 	height: 100%;
 	background-color: #f7f7f7;
 	display: flex;
 	flex-direction: column;
+	transition: width 0.5s;
 }
 
 .right-content .head-right-content {
@@ -398,12 +439,22 @@ a {
 }
 
 .right-content .head-right-content input + span {
-	cursor: pointer;
+	width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
 }
 
 .right-content .head-right-content > span > svg {
 	position: relative;
 	top: 8px;
+}
+
+.right-content .head-right-content > span > .star-dd{
+	top: 0px;
+	position: absolute;
+	fill:red;
+	right: 15px;
 }
 
 .right-content .head-right-content .center-head-content {
