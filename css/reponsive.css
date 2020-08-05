@@ -30,6 +30,9 @@
 	.left-content .search .mid-search + .left-search {
 		display: none;
 	}
+	.title-menu-side-bar {
+		display: none;
+	}
 
 }
 

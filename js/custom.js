@@ -277,10 +277,104 @@ function maskStartMainRight(element,dataID){
 
 function addEventMaskStartTaskItem(element){
 	var elementSpan = element.getElementsByTagName("span")[2];
-	console.log(elementSpan);
 	elementSpan.addEventListener('click', function(){
 		maskStartMainRight(element,maskStartTaskItem(this));
 	});
+}
+
+function addEventHoverComment(element){
+	element.addEventListener("mousemove",function(){
+		this.classList.add("active");
+	});
+	element.addEventListener("mouseleave", function(){
+		this.classList.remove("active");
+	});
+}
+
+function deleteComment(element){
+	var dataConfirm = confirm("Bạn muốn xóa comment?");
+	var parentDiv = element.parentElement;
+	if(dataConfirm == true){
+		parentDiv.remove();
+	}
+}
+
+function addEventDeleteComment(element){
+	element.addEventListener("click", function(){
+		deleteComment(this);
+	});
+}
+
+function addComment(textValue){
+	var node = document.createElement("DIV");
+	node.innerHTML = nodeComment; //nodeComent in valiable.js
+	node.querySelector("p span + span").textContent = ": "+textValue;
+
+	var divComment = document.getElementsByClassName("center-right-content-comment")[0];
+	divComment.appendChild(node);
+	addEventHoverComment(node);
+	addEventDeleteComment(node.querySelector("p + span"));
+}
+function addEventDrag(element){
+	element.addEventListener("dragstart", function(event){
+		dragStart(this);
+	});
+
+	element.addEventListener("drop", function(event){
+		drop();
+	});
+
+	element.addEventListener("dragover", function(event){
+		allowDrop(event);
+	});
+
+	element.addEventListener("dragenter", function(event){
+		dragEnter(event);
+	});
+
+	element.querySelector("p").addEventListener("dragleave", function(event){
+		var nodeTarget = event.target;
+		while(nodeTarget.nodeName != "DIV"){
+			nodeTarget = nodeTarget.parentElement;
+		}
+		dragLeave(nodeTarget);
+	});
+}
+
+function dragStart(element) {
+  
+  leaveItem = element;
+}
+
+function drop() {
+  event.preventDefault();
+  var node = leaveItem.cloneNode(true);
+  leaveItem.remove();
+  leaveItem = null;
+  var centerTask = document.getElementById("center-task");
+  var nodeTarget = event.target;
+  while(nodeTarget.nodeName != "DIV"){
+  	nodeTarget = nodeTarget.parentElement;
+  }
+  centerTask.insertBefore(node,nodeTarget.nextSibling);
+  addEventDrag(node);
+  dragLeave(nodeTarget);
+}
+
+function dragEnter(event){
+  var nodeTarget = event.target;
+  while(nodeTarget.nodeName != "DIV"){
+  	nodeTarget = nodeTarget.parentElement;
+  }
+  nodeTarget.style.marginBottom ="20px";
+}
+
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function dragLeave(nodeTarget){
+	nodeTarget.style.marginBottom = "1px";
 }
 
 //addEventListent
@@ -307,7 +401,7 @@ document.getElementById("account-Setting").addEventListener("click", function(){
 	document.getElementById("modal-setting").style.display="block";
 });
 
-
+var leaveItem = null;
 var centerTask = document.getElementById("center-task").children;
 for(var i = 0 ; i < centerTask.length; i++){
 	centerTask[i].addEventListener('contextmenu',function(event){
@@ -319,6 +413,7 @@ for(var i = 0 ; i < centerTask.length; i++){
 
 	addEventDbClickTaskItem(centerTask[i]);
 	addEventMaskStartTaskItem(centerTask[i]);
+	addEventDrag(centerTask[i]);
 
 }
 
@@ -387,6 +482,26 @@ document.getElementById("close-right").addEventListener("click", function(){
 document.querySelector(".head-right-content input + span").addEventListener('click',function(){
 	maskStartMainRight(this,maskStartTaskItem(this));
 });
+
+var hoverComment = document.getElementsByClassName("center-right-content-comment")[0].children;
+for(let i = 0; i< hoverComment.length; i++){
+	addEventHoverComment(hoverComment[i]);
+}
+
+var removeComment = document.getElementsByName("delete-comment");
+for(let i =0; i < removeComment.length; i++){
+	addEventDeleteComment(removeComment[i]);
+}
+
+document.getElementById("add-comment").addEventListener("keydown",function(event){
+	if(event.keyCode == 13){
+		addComment(this.value);
+		this.value = '';
+		event.preventDefault();
+	}
+});
+
+
 
 
 
