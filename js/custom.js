@@ -21,9 +21,9 @@ function showContextMenu(x,y){
 	element.style.top = y;
 	element.style.left = x;
 	var height = document.getElementsByTagName("body")[0].offsetHeight - y;
-	 if(height < element.offsetHeight){
+	if(height < element.offsetHeight){
 	 	element.style.height = height;
-	 }
+	}
 
 
 }
@@ -73,6 +73,7 @@ function createList(listName){
 	node.querySelector("span").innerHTML = listName;
 	item.appendChild(node);
 	addEventActiveMenuSideBar(node);
+
 
 }
 
@@ -131,28 +132,22 @@ function addTaskItem(text,event){
 	node.querySelector("span svg[name='task-uncheck']").addEventListener('click',function(){
 		successTaskItem(this);
 	});
-	addEventContextMenu(node,event);
-	addEventDbClickTaskItem(node);
-	addEventMaskStartTaskItem(node);
+	addEventCenterTaskItem(node);
 
 }
 
-function addEventSuccessTaskItem(){
-	var checkboxSuccess = document.getElementsByName("task-uncheck");
-	for(let i = 0; i < checkboxSuccess.length; i++){
-		checkboxSuccess[i].addEventListener('click', function(){
+function addEventSuccessTaskItem(element){
+	var checkboxSucces = element.querySelector("svg[name='task-uncheck']");
+	checkboxSucces.addEventListener("click", function(){
 			successTaskItem(this);
-		});
-	}	
+	});
 }
 
-function addEventUnSuccessTaskItem(){
-	var checkboxUnSuccess = document.getElementsByName("task-check");
-	for(let i =0; i < checkboxUnSuccess.length; i++){
-		checkboxUnSuccess[i].addEventListener('click', function(){
+function addEventUnSuccessTaskItem(element){
+	var checkboxSucces = element.querySelector("svg[name='task-check']");
+	checkboxSucces.addEventListener("click", function(){
 			unSuccessTaskItem(this);
-		});
-	}
+	});
 }
 
 function maskStart(){
@@ -316,12 +311,13 @@ function addComment(textValue){
 	addEventDeleteComment(node.querySelector("p + span"));
 }
 function addEventDrag(element){
-	element.addEventListener("dragstart", function(event){
+	element.setAttribute("draggable",true);
+	element.addEventListener("dragstart", function(){
 		dragStart(this);
 	});
 
 	element.addEventListener("drop", function(event){
-		drop();
+		drop(event);
 	});
 
 	element.addEventListener("dragover", function(event){
@@ -337,28 +333,30 @@ function addEventDrag(element){
 		while(nodeTarget.nodeName != "DIV"){
 			nodeTarget = nodeTarget.parentElement;
 		}
-		dragLeave(nodeTarget);
+		dragLeave(nodeTarget,element);
 	});
 }
 
 function dragStart(element) {
-  
   leaveItem = element;
 }
 
-function drop() {
+function drop(event) {
   event.preventDefault();
   var node = leaveItem.cloneNode(true);
-  leaveItem.remove();
-  leaveItem = null;
+  hideTaskItem(leaveItem);
+  var timeOut = setTimeout(function(){
+  	  	leaveItem.remove();
+  		leaveItem = null;
+  },400);
   var centerTask = document.getElementById("center-task");
   var nodeTarget = event.target;
   while(nodeTarget.nodeName != "DIV"){
   	nodeTarget = nodeTarget.parentElement;
   }
   centerTask.insertBefore(node,nodeTarget.nextSibling);
-  addEventDrag(node);
-  dragLeave(nodeTarget);
+  addEventCenterTaskItem(node);
+  removeMarginBottomCenterTaskItem(centerTask);
 }
 
 function dragEnter(event){
@@ -366,15 +364,57 @@ function dragEnter(event){
   while(nodeTarget.nodeName != "DIV"){
   	nodeTarget = nodeTarget.parentElement;
   }
-  nodeTarget.style.marginBottom ="20px";
+  nodeTarget.style.marginBottom = "20px";
+  nodeTarget.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
 }
 
 function allowDrop(event) {
   event.preventDefault();
 }
 
-function dragLeave(nodeTarget){
+function dragLeave(nodeTarget,element){
+	var nodeParent = element;
+	while(nodeParent.className != "center-task"){
+		nodeParent = nodeParent.parentElement;
+	}
+	removeMarginBottomCenterTaskItem(nodeParent);
+
 	nodeTarget.style.marginBottom = "1px";
+	nodeTarget.style.boxShadow = "none";
+}
+
+function hideTaskItem(element){
+	element.querySelector("span:first-child").style.display = "none";
+	element.querySelector("p").style.display = "none";
+	element.querySelector("p + span").style.display = "none";
+	element.style.transition = "height 0.3s";
+	element.style.padding = "0px";
+	element.style.height = "0px";
+}
+
+function addEventCenterTaskItem(element){
+	element.addEventListener('contextmenu',function(event){
+		var x = event.clientX;
+		var y = event.clientY; 
+		showContextMenu(x,y);
+		event.preventDefault();
+	});
+	addEventDbClickTaskItem(element);
+	addEventMaskStartTaskItem(element);
+	addEventDrag(element);	
+	addEventSuccessTaskItem(element);
+}
+
+function addEventCenterTaskItemComplete(element){
+	addEventUnSuccessTaskItem(element);
+}
+
+function removeMarginBottomCenterTaskItem(element){
+	for(let i = 0; i < element.children.length; i++){
+		element.children[i].style.marginBottom = "1px";
+		element.children[i].style.boxShadow = "none";x
+	}
+
 }
 
 //addEventListent
@@ -404,17 +444,12 @@ document.getElementById("account-Setting").addEventListener("click", function(){
 var leaveItem = null;
 var centerTask = document.getElementById("center-task").children;
 for(var i = 0 ; i < centerTask.length; i++){
-	centerTask[i].addEventListener('contextmenu',function(event){
-		var x = event.clientX;
-		var y = event.clientY; 
-		showContextMenu(x,y);
-		event.preventDefault();
-	});
+	addEventCenterTaskItem(centerTask[i]);
+}
 
-	addEventDbClickTaskItem(centerTask[i]);
-	addEventMaskStartTaskItem(centerTask[i]);
-	addEventDrag(centerTask[i]);
-
+var centerTaskComplete = document.getElementById("task-complete").children;
+for(var i = 0 ; i < centerTaskComplete.length; i++){
+	addEventCenterTaskItemComplete(centerTaskComplete[i]);
 }
 
 document.addEventListener("click",function(event){
@@ -445,8 +480,6 @@ for(var i = 0 ; i < menu_side_bar.length; i++){
 		event.preventDefault();
 	});
 	addEventActiveMenuSideBar(menu_side_bar[i]);
-	
-
 }
 
 document.querySelector("#model-create-list #create-list ul li span button[class=btn-submit]").addEventListener('click',function(){
@@ -460,8 +493,8 @@ document.querySelector("#model-create-list #create-list ul li span button[class=
 	}
 
 });
-addEventSuccessTaskItem();
-addEventUnSuccessTaskItem();
+/*addEventSuccessTaskItem();
+addEventUnSuccessTaskItem();*/
 
 document.getElementById("input-add-task").addEventListener('click', function(){
 	focusInputAddTask();
