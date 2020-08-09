@@ -412,7 +412,7 @@ function addEventCenterTaskItemComplete(element){
 function removeMarginBottomCenterTaskItem(element){
 	for(let i = 0; i < element.children.length; i++){
 		element.children[i].style.marginBottom = "1px";
-		element.children[i].style.boxShadow = "none";x
+		element.children[i].style.boxShadow = "none";
 	}
 
 }
@@ -533,6 +533,78 @@ document.getElementById("add-comment").addEventListener("keydown",function(event
 		event.preventDefault();
 	}
 });
+
+
+//Sort
+function getArrayCenterItem(){
+	var list = [];
+	centerTask = document.getElementById('center-task').children;
+	for(let i = 0; i < centerTask.length; i++){
+		var status = null;
+		var textContent = null;
+		var statusStart = null;
+		status = centerTask[i].querySelector('span svg').getAttribute('name');
+		textContent = centerTask[i].querySelector('p span').textContent;
+		statusStart = centerTask[i].querySelector('p + span > svg').getAttribute('name');
+		var itemTask = {
+			'status' 			: status,
+			'textContent'		: textContent,
+			'statusStart'		: statusStart, 
+		}
+		list.push(itemTask);
+	}
+	return list;
+}
+
+function removeCenterTaskItem(){
+	while(centerTask.length > 0){
+		centerTask[0].remove();
+	}
+}
+function showCenTerTaskItemSort(list){
+	centerTask = document.getElementById('center-task');
+	for(let i = 0; i < list.length; i++){
+		var node = document.createElement("div");
+		node.innerHTML = itemTaskUnSuccess;
+		node.setAttribute('class','item-task');
+		node.querySelector("p span").textContent = list[i].textContent;
+		if(list[i].statusStart != null){
+			node.querySelector("p + span").innerHTML = iconRedStart; // iconRedStart in valiable
+			node.querySelector("p + span").setAttribute("data-id","1");
+			//fillStart.style.opacity = 0;			
+		}
+		node.querySelector("span svg[name='task-uncheck']").addEventListener('click',function(){
+			successTaskItem(this);
+		});
+		centerTask.appendChild(node);
+		addEventCenterTaskItem(node);
+	}
+}
+
+function compare(a, b) {
+  const bandA = a.textContent.toUpperCase();
+  const bandB = b.textContent.toUpperCase();
+
+  let comparison = 0;
+  if(statusSort == "ASC"){
+  	bandA > bandB?comparison = 1:comparison = -1;
+  }else{
+  	bandA > bandB?comparison = -1:comparison = 1;
+  }
+  return comparison;
+}
+
+var statusSort = "ASC";
+document.getElementById('sort').addEventListener('click', function(){
+	var listItem = getArrayCenterItem();
+	console.log(listItem);
+	removeCenterTaskItem();
+	showCenTerTaskItemSort(listItem.sort(compare));
+	statusSort == "ASC"?statusSort = "DESC":statusSort = "ASC";
+});
+
+
+
 
 
 
