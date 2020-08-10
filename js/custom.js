@@ -77,9 +77,11 @@ function createList(listName){
 
 }
 
-function successTaskItem(element){
-	var parentSpan = element.parentElement;
-	var parentDiv = parentSpan.parentElement;
+function successTaskItem(element){ //element is tag svg
+	var parentDiv = element;
+	while(parentDiv.nodeName != "DIV"){
+		parentDiv = parentDiv.parentElement;
+	}
 	var textSpan = parentDiv.querySelector("p span").textContent;
 	
 	var node = document.createElement("div");
@@ -290,7 +292,10 @@ function deleteComment(element){
 	var dataConfirm = confirm("Bạn muốn xóa comment?");
 	var parentDiv = element.parentElement;
 	if(dataConfirm == true){
-		parentDiv.remove();
+		parentDiv.style.opacity = "0";
+		setTimeout(function(){
+			parentDiv.remove();
+		},500);
 	}
 }
 
@@ -365,7 +370,7 @@ function dragEnter(event){
   	nodeTarget = nodeTarget.parentElement;
   }
   nodeTarget.style.marginBottom = "20px";
-  nodeTarget.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
+  nodeTarget.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";	
 }
 
 function allowDrop(event) {
@@ -378,7 +383,6 @@ function dragLeave(nodeTarget,element){
 		nodeParent = nodeParent.parentElement;
 	}
 	removeMarginBottomCenterTaskItem(nodeParent);
-
 	nodeTarget.style.marginBottom = "1px";
 	nodeTarget.style.boxShadow = "none";
 }
@@ -412,7 +416,6 @@ function addEventCenterTaskItemComplete(element){
 function removeMarginBottomCenterTaskItem(element){
 	for(let i = 0; i < element.children.length; i++){
 		element.children[i].style.marginBottom = "1px";
-		element.children[i].style.boxShadow = "none";x
 	}
 
 }
@@ -452,6 +455,9 @@ for(var i = 0 ; i < centerTaskComplete.length; i++){
 	addEventCenterTaskItemComplete(centerTaskComplete[i]);
 }
 
+
+
+
 document.addEventListener("click",function(event){
 	if(getAttributeDisplay("context-item") == "block"){
 		if(!document.getElementById("context-item").contains(event.target)){
@@ -469,6 +475,17 @@ document.addEventListener("click",function(event){
 			unForcusInputAddTask();
 		}
 	}
+	if(getAttributeDisplay("dropdown-content") == "block"){
+		var dropMenu = document.getElementById("dropdown-content");
+		if(!dropMenu.contains(event.target) && !document.getElementsByClassName("user")[0].contains(event.target)){
+				dropMenu.style.animation = "fade_in_hide 0.5s";
+				setTimeout(function(){
+					dropMenu.style.display = "none";
+				},500);
+		}		
+	}
+
+
 });
 
 var menu_side_bar =document.querySelector(".menu-side-bar ul").children;
@@ -533,6 +550,34 @@ document.getElementById("add-comment").addEventListener("keydown",function(event
 		event.preventDefault();
 	}
 });
+
+document.getElementsByClassName("left-search")[0].addEventListener("click", function(){
+	var leftContent = document.getElementById("left-content");
+	if(leftContent.getAttribute("class").indexOf("reponsive") > 0){
+		leftContent.style.width = "280px";
+		leftContent.classList.remove("reponsive");
+	}else{
+		leftContent.style.width = "50px";
+		leftContent.classList.add("reponsive");
+	}	
+
+});
+
+document.getElementsByClassName("user")[0].addEventListener("click", function(){
+	var dropMenu = document.getElementById("dropdown-content");
+	dropMenu.style.animation = "fade_in_show 0.5s";
+	dropMenu.style.display = "block";
+});
+
+document.getElementById("head-right-content").querySelector("span:first-child").addEventListener("click",function(){
+	var parentDiv = this.parentElement;
+	//alert(parentDiv.nodeName);
+	var centerTask = document.getElementById("center-task");
+	var element = centerTask.getElementsByClassName("active")[0];
+	successTaskItem(element);
+
+});
+
 
 
 

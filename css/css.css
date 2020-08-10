@@ -51,6 +51,7 @@ ul {
 	fill: #328ad6;
 	position: relative;
 	top: 5px;
+	left: 4px;
 }
 
 .disable {
@@ -120,12 +121,13 @@ a {
 
  /*------*/
 
-.left-content {
+.left-content, .left-content-reponsive{
 	width: 280px;
 	height: 100%;
 	background-color: #f7f7f7;
 	display: flex;
 	flex-direction: column;
+	transition: width 0.5s;
 }
 
 .left-content .search {
@@ -196,6 +198,7 @@ a {
 	width: 240px;
 	top: 80px;
 	display: none;
+	
 }
 
 .left-content .side-bar .user-infor .dropdown .dropdown-content a {
@@ -481,6 +484,7 @@ a {
 	display: flex;
 	word-break: break-all;
 	padding: 10px 10px 10px 40px; 
+	transition: opacity 0.5s;
 
 }
 
@@ -1040,16 +1044,23 @@ a {
 div.side-bar-action:hover .create{
 	display: block;
 }
+
 .mid-content .action-mid-content .action-task:hover {
 	opacity: 1;
 }
+/* 
 .left-content .side-bar .user-infor .dropdown:hover .dropdown-content{
 	display: block;
 	animation: fade_in_show 0.8s;
-}
+} */
 @keyframes fade_in_show {
   0% {opacity: 0}
-  100% {opacity: 1;}
+  100% {opacity: 1}
+}
+
+@keyframes fade_in_hide {
+	0% {opacity: 1}
+	100% {opacity: 0}
 }
 
 .left-content .side-bar .user-infor .user-notification a:hover {

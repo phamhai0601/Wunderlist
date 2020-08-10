@@ -2,7 +2,7 @@
 
 	.left-content {
  		width: 50px;
- 		transition: width 0.5s;
+ 		
 	}
 
 	.left-content .side-bar .menu-side-bar ul li a span {
@@ -104,6 +104,39 @@
 		flex-direction:row;
 	}
 }
+
+.reponsive .side-bar .menu-side-bar ul li a span {
+	display: none;
+} 
+
+.reponsive .side-bar .user-infor .dropdown .user p {
+	display: none;
+}
+
+.reponsive .side-bar .user-infor .user-notification {
+	display: none;
+}
+.reponsive .iconbell {
+	display: none;
+}
+
+.reponsive .side-bar-action a span + span{
+	display: none;
+}
+
+.reponsive .search .mid-search {
+	display: none;
+}
+.reponsive .search .mid-search + .left-search {
+	display: none;
+}
+.reponsive .title-menu-side-bar {
+	display: none;
+}
+
+
+
+
 
 
 
