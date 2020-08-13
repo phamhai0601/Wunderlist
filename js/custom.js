@@ -78,8 +78,10 @@ function createList(listName){
 }
 
 function successTaskItem(element){
-	var parentSpan = element.parentElement;
-	var parentDiv = parentSpan.parentElement;
+	var parentDiv = element;
+	while(parentDiv.nodeName != "DIV"){
+		parentDiv = parentDiv.parentElement;
+	}
 	var textSpan = parentDiv.querySelector("p span").textContent;
 	
 	var node = document.createElement("div");
@@ -90,16 +92,24 @@ function successTaskItem(element){
 		node.querySelector("p + span").innerHTML = iconRedStart; //iconRedStart in valiable.js
 		node.querySelector("p +span").setAttribute("data-id","1");
 	}
+	if(parentDiv.getAttribute('class').indexOf('active') > 0){
+		node.classList.add("active");
+	}
 	document.getElementsByClassName("task-complete")[0].appendChild(node);
 	node.querySelector("span svg[name='task-check']").addEventListener('click',function(){
 		unSuccessTaskItem(this);
 	});
+
 	parentDiv.remove();
+	addEventCenterTaskItem(node);
+	
 }
 
 function unSuccessTaskItem(element){
-	var parentSpan = element.parentElement;
-	var parentDiv = parentSpan.parentElement;
+	var parentDiv = element;
+	while(parentDiv.nodeName != "DIV"){
+		parentDiv = parentDiv.parentElement;
+	}
 	var textSpan = parentDiv.querySelector("p span").textContent;
 	var node = document.createElement("div");
 	node.innerHTML = itemTaskUnSuccess;
@@ -109,11 +119,13 @@ function unSuccessTaskItem(element){
 		node.querySelector("p + span").innerHTML = iconRedStart; //iconRedStart in valiable.js
 		node.querySelector("p +span").setAttribute("data-id","1");
 	}
+	if(parentDiv.getAttribute('class').indexOf('active') > 0){
+		node.classList.add("active");
+	}
 	document.getElementsByClassName("center-task")[0].appendChild(node);
-	node.querySelector("span svg[name='task-uncheck']").addEventListener('click',function(){
-		successTaskItem(this);
-	});
+	addEventCenterTaskItem(node);
 	parentDiv.remove();
+
 }
 
 function addTaskItem(text,event){
@@ -129,9 +141,6 @@ function addTaskItem(text,event){
 		fillStart.style.opacity = 0;
 	}
 	document.getElementsByClassName("center-task")[0].appendChild(node);
-	node.querySelector("span svg[name='task-uncheck']").addEventListener('click',function(){
-		successTaskItem(this);
-	});
 	addEventCenterTaskItem(node);
 
 }
@@ -198,6 +207,11 @@ function addEventDbClickTaskItem(element){
 		mainRight.style.width='370px';
 		var textItem = element.querySelector("p > span").textContent;
 		mainRight.querySelector(".head-right-content input").value = textItem;
+		if(element.querySelector("span:first-child svg").getAttribute('name') == "task-uncheck"){
+			mainRight.querySelector(".head-right-content span:first-child").innerHTML = checkboxUnSucces;
+		}else{
+			mainRight.querySelector(".head-right-content span:first-child").innerHTML = checkboxSucces;
+		}
 		if(element.querySelector("p+span").getAttribute("data-id") == "1"){
 			mainRight.querySelector(".head-right-content input + span").innerHTML = iconRedStart;
 			mainRight.querySelector(".head-right-content input + span").setAttribute("data-id","1");
@@ -205,7 +219,7 @@ function addEventDbClickTaskItem(element){
 			mainRight.querySelector(".head-right-content input + span").innerHTML = iconStart;
 			mainRight.querySelector(".head-right-content input + span").setAttribute("data-id","0");
 		}
-		var centerTask = document.getElementById("center-task").children;
+		var centerTask = document.getElementsByClassName('item-task');
 		for(let i = 0; i < centerTask.length; i++){
 			centerTask[i].classList.remove("active");
 		}
@@ -215,11 +229,14 @@ function addEventDbClickTaskItem(element){
 
 function addEventActiveMenuSideBar(element){
 	element.addEventListener('click',function(event){
-		console.log(this.getAttribute('class'));
 		removeClassActive(menu_side_bar);
 		this.classList.add("active");
-		document.querySelector(".head-mid-content span").innerHTML =this.textContent;;
+		document.querySelector(".head-mid-content span").innerHTML =this.textContent;
+		console.log(element.getAttribute("data-id"));
+		checkActiveMenuSideBarTaskItem(element.getAttribute("data-id"));
 	});
+	
+	
 }
 
 function maskStartTaskItem(element){
@@ -414,8 +431,9 @@ function removeMarginBottomCenterTaskItem(element){
 		element.children[i].style.marginBottom = "1px";
 		element.children[i].style.boxShadow = "none";
 	}
-
 }
+
+
 
 //addEventListent
 
@@ -480,7 +498,10 @@ for(var i = 0 ; i < menu_side_bar.length; i++){
 		event.preventDefault();
 	});
 	addEventActiveMenuSideBar(menu_side_bar[i]);
+
 }
+
+
 
 document.querySelector("#model-create-list #create-list ul li span button[class=btn-submit]").addEventListener('click',function(){
 	var name = document.querySelector("#create-list ul li input[name=create]");
@@ -489,7 +510,9 @@ document.querySelector("#model-create-list #create-list ul li span button[class=
 		name.focus();
 	}else{
 		closeModelCreateList();	
-		createList(name.value);	
+		createList(name.value);
+		setIdMeunuSildeBar(getArrayMenuSildeBar());
+
 	}
 
 });
@@ -555,10 +578,15 @@ function getArrayCenterItem(){
 	}
 	return list;
 }
-
-function removeCenterTaskItem(){
-	while(centerTask.length > 0){
-		centerTask[0].remove();
+function setIdCenterItem(){
+	for(let i = 0; i < centerTask.length; i++){
+		centerTask[i].setAttribute("data-id","0");
+	}	
+}
+setIdCenterItem();
+function removeCenterTaskItem(list){
+	while(list.length > 0){
+		list[0].remove();
 	}
 }
 function showCenTerTaskItemSort(list){
@@ -598,10 +626,86 @@ var statusSort = "ASC";
 document.getElementById('sort').addEventListener('click', function(){
 	var listItem = getArrayCenterItem();
 	console.log(listItem);
-	removeCenterTaskItem();
+	removeCenterTaskItem(centerTask);
 	showCenTerTaskItemSort(listItem.sort(compare));
 	statusSort == "ASC"?statusSort = "DESC":statusSort = "ASC";
 });
+
+//checkStart
+document.querySelector('.head-right-content span').addEventListener('click', function(){
+	var taskName = this.querySelector('svg').getAttribute('name');
+	var taskItem = document.getElementsByClassName('item-task');
+	var node;
+	for(let i = 0; i < taskItem.length; i++){
+		if(taskItem[i].getAttribute('class').indexOf('active') > 0){
+			node = taskItem[i];
+		}
+	}
+	if(taskName == 'task-uncheck'){
+		this.innerHTML = checkBoxSuccess;
+		successTaskItem(node);
+		
+	}else{
+		this.innerHTML = checkboxUnSucces;
+		unSuccessTaskItem(node);
+	}
+
+});
+
+//serach....
+
+document.getElementById("search-task-input").addEventListener("keyup", function(){
+	var arr = getArrayCenterItem();
+	for(let i = 0; i < centerTask.length; i++){
+		centerTask[i].style.display = "none";
+	}
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].textContent.toLowerCase().indexOf(this.value.toLowerCase()) > -1){
+			centerTask[i].style.display = "";
+		}
+	}
+});
+
+
+/////
+function getArrayMenuSildeBar(){
+	var arr = [];
+	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
+	console.log(menu_side_bar.length);
+	for(let i = 0; i < menu_side_bar.length; i++){
+		var id = i;
+		var name = menu_side_bar[i].querySelector("p > span").textContent;
+		var item = {
+			'id' : id,
+			'name': name,
+		}
+		arr.push(item);
+	}
+	return arr;
+}
+
+function setIdMeunuSildeBar(arr){
+	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
+	for(let i = 0; i < menu_side_bar.length; i++){
+		menu_side_bar[i].setAttribute("data-id",arr[i].id);
+	}	
+}
+setIdMeunuSildeBar(getArrayMenuSildeBar());
+
+function checkActiveMenuSideBarTaskItem(data_id){
+	var arr = document.getElementById('center-task').children;
+	for(let i = 0; i < arr.length; i++){
+		arr[i].style.display = "none";
+	}
+
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].getAttribute("data-id") == data_id){
+			arr[i].style.display = "";
+		}
+	}
+}
+checkActiveMenuSideBarTaskItem("0");
+
 
 
 
