@@ -1,3 +1,6 @@
+var elemenContextMenu;
+
+
 function closeModelCreateList(){
 	document.getElementById("create-list").style.animation = "fade_out 0.8s";
 	myVar = setTimeout(function(){
@@ -101,7 +104,7 @@ function successTaskItem(element){
 	});
 
 	parentDiv.remove();
-	addEventCenterTaskItem(node);
+	//addEventCenterTaskItem(node);
 	
 }
 
@@ -128,6 +131,13 @@ function unSuccessTaskItem(element){
 
 }
 
+function getIdMenuSideBarActive(){
+	var menu_side_bar = document.getElementsByClassName('menu-side-bar')[0];
+	var item_menu_side_bar = menu_side_bar.getElementsByClassName('active')[0];
+	return item_menu_side_bar.getAttribute("data-id");
+}
+
+
 function addTaskItem(text,event){
 	var fillStart =  document.getElementById("fill-starred");
 	var node = document.createElement("div");
@@ -142,6 +152,7 @@ function addTaskItem(text,event){
 	}
 	document.getElementsByClassName("center-task")[0].appendChild(node);
 	addEventCenterTaskItem(node);
+	node.setAttribute("data-id",getIdMenuSideBarActive());
 
 }
 
@@ -159,7 +170,7 @@ function addEventUnSuccessTaskItem(element){
 	});
 }
 
-function maskStart(){
+function má(){
 	var fillStart = document.getElementById("fill-starred");
 	if(fillStart.style.opacity == "0"){
 		
@@ -197,6 +208,7 @@ function addEventContextMenu(element,event){
 		var x = event.clientX;
 		var y = event.clientY; 
 		showContextMenu(x,y);
+		console.log(element);
 		event.preventDefault();		
 	});
 }
@@ -239,7 +251,7 @@ function addEventActiveMenuSideBar(element){
 	
 }
 
-function maskStartTaskItem(element){
+function maskStartTaskItem(element){   //set status of start.
 	var dataID = 0;
 	if(element.getAttribute("data-id") == "0"){
 		element.innerHTML = iconRedStart;
@@ -414,6 +426,8 @@ function addEventCenterTaskItem(element){
 		var x = event.clientX;
 		var y = event.clientY; 
 		showContextMenu(x,y);
+		elemenContextMenu = element;
+		console.log(elemenContextMenu);
 		event.preventDefault();
 	});
 	addEventDbClickTaskItem(element);
@@ -433,6 +447,43 @@ function removeMarginBottomCenterTaskItem(element){
 	}
 }
 
+
+/////
+function getArrayMenuSildeBar(){
+	var arr = [];
+	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
+	for(let i = 0; i < menu_side_bar.length; i++){
+		var id = i;
+		var name = menu_side_bar[i].querySelector("p > span").textContent;
+		var item = {
+			'id' : id,
+			'name': name,
+		}
+		arr.push(item);
+	}
+	return arr;
+}
+
+function setIdMeunuSildeBar(arr){
+	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
+	for(let i = 0; i < menu_side_bar.length; i++){
+		menu_side_bar[i].setAttribute("data-id",arr[i].id);
+	}	
+}
+setIdMeunuSildeBar(getArrayMenuSildeBar());
+
+function checkActiveMenuSideBarTaskItem(data_id){
+	var arr = document.getElementById('center-task').children;
+	for(let i = 0; i < arr.length; i++){
+		arr[i].style.display = "none";
+	}
+
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].getAttribute("data-id") == data_id){
+			arr[i].style.display = "";
+		}
+	}
+}
 
 
 //addEventListent
@@ -660,51 +711,90 @@ document.getElementById("search-task-input").addEventListener("keyup", function(
 		centerTask[i].style.display = "none";
 	}
 	for(let i = 0; i < arr.length; i++){
-		if(arr[i].textContent.toLowerCase().indexOf(this.value.toLowerCase()) > -1){
-			centerTask[i].style.display = "";
+		if(arr[i].textContent.toLowerCase().indexOf(this.value.toLowerCase()) > -1 && getIdMenuSideBarActive() == centerTask[i].getAttribute("data-id")){
+				centerTask[i].style.display = "";
 		}
 	}
 });
 
 
-/////
-function getArrayMenuSildeBar(){
-	var arr = [];
-	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
-	console.log(menu_side_bar.length);
-	for(let i = 0; i < menu_side_bar.length; i++){
-		var id = i;
-		var name = menu_side_bar[i].querySelector("p > span").textContent;
-		var item = {
-			'id' : id,
-			'name': name,
+document.getElementById('mark-as-completed').addEventListener('click', function(){
+	document.getElementById("context-item").style.display = "none";
+	successTaskItem(elemenContextMenu);
+
+});
+
+document.getElementById('mark-as-start').addEventListener('click',function(){
+	var elementSpan = elemenContextMenu.getElementsByTagName("span")[2];
+	maskStartTaskItem(elementSpan);
+	document.getElementById("context-item").style.display = "none";
+});
+
+document.getElementById("left-search").addEventListener('click',function(){
+	var element = document.getElementById("left-content");
+	if(screen.width > 1000){
+		if(element.getAttribute('class').indexOf('reponsive-50') > -1){
+			element.classList.remove('reponsive-50');
+		}else{
+			element.classList.add('reponsive-50');
 		}
-		arr.push(item);
+	}else{
+		if(element.getAttribute('class').indexOf('reponsive-280') > -1){
+			element.classList.remove('reponsive-280');
+		}else{
+			element.classList.add('reponsive-280');
+		}		
 	}
-	return arr;
+});
+
+function addSubTask(boxSubTask,value){
+	var elementLi = document.createElement("LI");
+	elementLi.innerHTML = subtask;
+	elementLi.querySelector('span:first-child').textContent = value;
+	elementLi.querySelector('span:last-child').addEventListener('click',function(){
+		removeSubTask(this);
+	});	
+	boxSubTask.appendChild(elementLi);
+	elementLi.focus();
 }
 
-function setIdMeunuSildeBar(arr){
-	var menu_side_bar = document.querySelector(".menu-side-bar ul").children;
-	for(let i = 0; i < menu_side_bar.length; i++){
-		menu_side_bar[i].setAttribute("data-id",arr[i].id);
-	}	
-}
-setIdMeunuSildeBar(getArrayMenuSildeBar());
-
-function checkActiveMenuSideBarTaskItem(data_id){
-	var arr = document.getElementById('center-task').children;
-	for(let i = 0; i < arr.length; i++){
-		arr[i].style.display = "none";
+function removeSubTask(element){
+	var dataConfirm = confirm("Bạn muốn xóa subtask?");
+	if(dataConfirm == true){
+		element.parentElement.remove();
 	}
+	
+}
 
-	for(let i = 0; i < arr.length; i++){
-		if(arr[i].getAttribute("data-id") == data_id){
-			arr[i].style.display = "";
+document.getElementById('input-subtask').addEventListener('keyup', function(event){
+	var boxSubTask = document.getElementById('box-subtask');
+	if(event.keyCode==13){
+		if(this.value.length < 1){
+			alert("Nhập subtask.");
+		}else{
+			addSubTask(boxSubTask,this.value);
+			this.value = "";
 		}
 	}
+})
+
+window.addEventListener('resize', function(){
+	var element = document.getElementById('left-content');
+	element.classList.remove('reponsive-50');
+	element.classList.remove('reponsive-280');
+});
+var itemId = 0;
+function setIdCenterTaskItem(){
+	var centerTaskItem = document.getElementById('center-task').children;
+	for(let i = 0; i < centerTaskItem.length; i++){
+		centerTaskItem[i].setAttribute("item-id",i);
+		itemId++;
+	}
 }
-checkActiveMenuSideBarTaskItem("0");
+
+
+
+
 
 
 

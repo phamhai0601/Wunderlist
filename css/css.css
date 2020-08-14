@@ -536,6 +536,30 @@ a {
 	outline: none;
 }
 
+.right-content .center-right-content  ul  div {
+	max-height: 100px;
+	overflow-y: auto;
+}
+
+.right-content .center-right-content  ul div li span:first-child {
+	padding: 10px;
+	width: 100%;
+	border: none;
+	background: none;
+	outline: none;	
+	line-height: 30px;
+	word-break: break-all;
+	margin-left: 30px;
+}
+
+.right-content .center-right-content  ul div li span:last-child {
+	padding:20px 10px;
+	opacity: 0;
+	cursor: pointer;
+}
+
+
+
 .right-content .center-right-content  ul  li .icon-side {
 	margin-right: 10px;
 	cursor: pointer;
@@ -845,6 +869,7 @@ a {
 
 #model-create-list .create-list ul li .create-list-user .create-list-user-detail {
 	display: flex;
+
 	flex-direction:column;
 	padding: 5px 15px;
 }
@@ -1087,6 +1112,12 @@ input[type="file"] {
 .right-content .center-right-content-comment div:hover span:last-child {
 	opacity: 1;
 }
+
+.right-content .center-right-content  ul div li:hover span:last-child {
+	opacity: 1;
+}
+
+
 
 
 
