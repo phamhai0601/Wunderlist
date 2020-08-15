@@ -40,5 +40,3 @@ document.getElementById("accountSetting").addEventListener("click", function(){
 	document.getElementById("modal-setting");.style.display="block";
 });
 
-git test revert
-
