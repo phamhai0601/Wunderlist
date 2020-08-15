@@ -33,7 +33,7 @@ document.getElementById("side-bar-action").addEventListener('click', function(){
 });
 
 document.querySelector("#model-create-list button[class=btn-cancel]").addEventListener("click", function(){
-	close_model_create_list();
+	close_model_create_list111();
 });
 
 document.getElementById("accountSetting").addEventListener("click", function(){
